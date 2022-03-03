@@ -5,4 +5,5 @@ export enum Endpoint {
     volumeDown = '/volume/down',
     volumeInfo = '/volume/info',
     volumeToggle = '/volume/toggle',
+    volumeSet = '/volume/set/{vol}',
 }

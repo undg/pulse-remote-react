@@ -2,9 +2,12 @@ import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import Slider from '@mui/material/Slider'
-import { Button } from '@mui/material'
-import { apiUrl, Endpoint } from './../constant'
-import { VolumeResponseJson } from '../api'
+import IconButton from '@mui/material/IconButton'
+import VolumeDownIcon from '@mui/icons-material/VolumeDown';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import VolumeOffIcon from '@mui/icons-material/VolumeOff';
+import { Endpoint } from './../constant'
+import { changeVolume } from '../api'
 
 export function VolumeSlider() {
     const MAX = 150
@@ -13,47 +16,57 @@ export function VolumeSlider() {
     const [mute, setMute] = useState<boolean>(false)
 
     useEffect(() => {
-        setVolumeFromRes(Endpoint.volumeInfo, setVolume)
+        changeVolume({ endpoint: Endpoint.volumeInfo, setVolume })
     }, [])
 
-    const handleChange = (event: Event, newValue: number | number[]) => {
-        setVolume(newValue as number)
+    const handleChange = (_any: any, newVolume: number | number[]) => {
+        if (newVolume === volume) return
+        changeVolume({ endpoint: Endpoint.volumeSet, setVolume, value: newVolume as number })
     }
 
     const volumeUp = () => {
-        setVolumeFromRes(Endpoint.volumeUp, setVolume)
+        changeVolume({ endpoint: Endpoint.volumeUp, setVolume })
     }
 
     const volumeDown = () => {
-        setVolumeFromRes(Endpoint.volumeDown, setVolume)
+        changeVolume({ endpoint: Endpoint.volumeDown, setVolume })
     }
 
     const volumeToggle = () => {
-        setVolumeFromRes(Endpoint.volumeToggle, setVolume)
+        changeVolume({ endpoint: Endpoint.volumeToggle, setVolume, setMute })
     }
+
+    const marks = [
+        { value: 0, label: '0%' },
+        { value: 50, label: '50%' },
+        { value: 100, label: '100%' },
+        { value: 150, label: '150%' },
+    ]
 
     return (
         <Box>
-            <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
-                <Button variant="outlined" onClick={volumeDown}>
-                    -
-                </Button>
-                <Slider aria-label="Volume" max={MAX} value={volume} step={10} onChange={handleChange} />
-                <Button variant="outlined" onClick={volumeUp}>
-                    +
-                </Button>
-                <Button variant="outlined" onClick={volumeToggle}>
-                    M
-                </Button>
+            <Stack alignItems="end">
+                <IconButton onTouchEnd={volumeToggle} onMouseUp={volumeDown}>
+                    <VolumeOffIcon color={mute ? "error" : "disabled"} />
+                </IconButton>
+            </Stack>
+            <Stack spacing={2} direction={{ xs: 'row', sm: 'row' }} alignItems="center">
+                <IconButton onTouchEnd={volumeDown} onMouseUp={volumeDown}>
+                    <VolumeDownIcon />
+                </IconButton>
+                <Slider
+                    aria-label="Volume"
+                    max={MAX}
+                    value={volume}
+                    step={5}
+                    onChangeCommitted={handleChange}
+                    disabled={mute}
+                    marks={marks}
+                />
+                    <IconButton onTouchEnd={volumeUp} onMouseUp={volumeUp}>
+                        <VolumeUpIcon />
+                    </IconButton>
             </Stack>
         </Box>
     )
 }
-
-async function setVolumeFromRes(endpoint: Endpoint, setVolume: React.Dispatch<React.SetStateAction<number>>) {
-    const res = await fetch(apiUrl + endpoint)
-        const json: VolumeResponseJson = await res.json()
-        const volume = Math.round(json[0].volume[0].value * 100)
-        setVolume(volume)
-}
-
