@@ -59,7 +59,7 @@ export function VolumeSlider() {
                     max={MAX}
                     value={volume}
                     step={5}
-                    onChangeCommitted={handleChange}
+                    onChange={handleChange}
                     disabled={mute}
                     marks={marks}
                 />
