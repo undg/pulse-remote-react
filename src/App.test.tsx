@@ -3,6 +3,6 @@ import App from './App'
 
 test('renders learn react link', () => {
     render(<App />)
-    const headerElement = screen.getByText(/volume/i)
+    const headerElement = screen.getByText(/pulse/i)
     expect(headerElement).toBeInTheDocument()
 })

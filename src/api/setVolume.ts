@@ -1,30 +1,21 @@
-import { apiUrl, Endpoint } from "../constant"
-import { VolumeResponseJson } from "./types"
+import { apiUrl, Endpoint } from '../constant'
+import { ISinkSerialize } from '../types'
 
 interface SetVolumeFromRes {
     endpoint: Endpoint
-    setVolume: React.Dispatch<React.SetStateAction<number>>
-    setMute?: React.Dispatch<React.SetStateAction<boolean>>
-    value?: number | false
+    value?: number | null
+    card?: number
 }
 
-export async function changeVolume({ endpoint, setVolume, setMute, value = false }: SetVolumeFromRes) {
+export async function apiAudioDevices({ endpoint, value = null, card = 0 }: SetVolumeFromRes) {
     const res =
-        value === false
-            ? await fetch(apiUrl + endpoint)
-            : await fetch(apiUrl + endpoint.replace('{vol}', value.toString()))
+        value === null
+            ? await fetch(apiUrl + endpoint.replace('{card}', card.toString()))
+            : await fetch(apiUrl + endpoint.replace('{card}', card.toString()).replace('{vol}', value.toString()))
 
-    const json: VolumeResponseJson = await res.json()
-    const volume = Math.round(json[0].volume[0].value * 100)
-    const mute = json[0].mute === 1
-
-    setVolume(volume)
-
-    if(setMute)
-        setMute(mute)
+    const json: ISinkSerialize[] = await res.json()
 
     console.log(endpoint, json)
 
     return json
 }
-

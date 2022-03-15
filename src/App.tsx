@@ -1,13 +1,13 @@
-import { VolumeSlider } from "./components"
+import { AudioDevices } from './components'
+import Box from '@mui/material/Box'
+import { Typography } from '@mui/material'
 function App() {
     return (
         <div className="App">
-            <header className="App-header">
-                <p>Volume controll for machine "CM"</p>
-            </header>
-            <main>
-                <VolumeSlider />
-            </main>
+            <Box display="flex" justifyContent="center">
+                <Typography variant="h2">Pulse audio remote</Typography>
+            </Box>
+            <AudioDevices />
         </div>
     )
 }

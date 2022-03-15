@@ -1,39 +1,65 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Dispatch, SetStateAction } from 'react'
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import Slider from '@mui/material/Slider'
 import IconButton from '@mui/material/IconButton'
-import VolumeDownIcon from '@mui/icons-material/VolumeDown';
-import VolumeUpIcon from '@mui/icons-material/VolumeUp';
-import VolumeOffIcon from '@mui/icons-material/VolumeOff';
+import VolumeDownIcon from '@mui/icons-material/VolumeDown'
+import VolumeUpIcon from '@mui/icons-material/VolumeUp'
+import VolumeOffIcon from '@mui/icons-material/VolumeOff'
 import { Endpoint } from './../constant'
-import { changeVolume } from '../api'
+import { apiAudioDevices } from '../api'
+import { ISinkSerialize } from '../types'
+import { volume2percent } from '../utils'
+import { Grid, Typography } from '@mui/material'
 
-export function VolumeSlider() {
-    const MAX = 150
-    const MIN = 0
-    const [volume, setVolume] = useState<number>(MIN)
-    const [mute, setMute] = useState<boolean>(false)
+export function AudioDevices() {
+    const [audioDevices, setAudioDevices] = useState<ISinkSerialize[]>([])
 
     useEffect(() => {
-        changeVolume({ endpoint: Endpoint.volumeInfo, setVolume })
+        apiAudioDevices({ endpoint: Endpoint.volumeInfo }).then(setAudioDevices)
     }, [])
 
-    const handleChange = (_any: any, newVolume: number | number[]) => {
+    return (
+        <>
+            {audioDevices.map(device => (
+                <VolumeSlider {...device} key={device.index} setAudioDevices={setAudioDevices} />
+            ))}
+        </>
+    )
+}
+
+function VolumeSlider(props: ISinkSerialize & { setAudioDevices: Dispatch<SetStateAction<ISinkSerialize[]>> }) {
+    const MAX = 150
+    const volume = volume2percent(props.volume[0].value)
+    const mute = props.mute
+    const description = props.description
+    const card = props.index
+    const setAudioDevState = props.setAudioDevices
+
+    const [displayVolume, setDisplyVolume] = useState<number>(volume)
+    useEffect(() => {
+        setDisplyVolume(volume)
+    }, [volume])
+
+    const handleChange = (_event: any, newVolume: number | number[]) => {
+        setDisplyVolume(newVolume as number)
+    }
+    const handleChangeCommitted = (_event: any, newVolume: number | number[]) => {
         if (newVolume === volume) return
-        changeVolume({ endpoint: Endpoint.volumeSet, setVolume, value: newVolume as number })
+
+        apiAudioDevices({ endpoint: Endpoint.volumeSet, value: newVolume as number, card }).then(setAudioDevState)
     }
 
     const volumeUp = () => {
-        changeVolume({ endpoint: Endpoint.volumeUp, setVolume })
+        apiAudioDevices({ endpoint: Endpoint.volumeUp, card }).then(setAudioDevState)
     }
 
     const volumeDown = () => {
-        changeVolume({ endpoint: Endpoint.volumeDown, setVolume })
+        apiAudioDevices({ endpoint: Endpoint.volumeDown, card }).then(setAudioDevState)
     }
 
     const volumeToggle = () => {
-        changeVolume({ endpoint: Endpoint.volumeToggle, setVolume, setMute })
+        apiAudioDevices({ endpoint: Endpoint.volumeToggle, card }).then(setAudioDevState)
     }
 
     const marks = [
@@ -44,12 +70,18 @@ export function VolumeSlider() {
     ]
 
     return (
-        <Box>
-            <Stack alignItems="end">
+    <Box display="flex" justifyContent="center">
+        <Box mt={2} maxWidth={1400} width="100%">
+            <Grid container alignItems="end">
+                <Grid item xs={10}>
+                    <Typography variant="subtitle1">{description}</Typography>
+                </Grid>
+                <Grid item xs={2}>
                 <IconButton onTouchEnd={volumeToggle} onMouseUp={volumeDown}>
-                    <VolumeOffIcon color={mute ? "error" : "disabled"} />
+                    <VolumeOffIcon color={mute ? 'error' : 'disabled'} />
                 </IconButton>
-            </Stack>
+                </Grid>
+            </Grid>
             <Stack spacing={2} direction={{ xs: 'row', sm: 'row' }} alignItems="center">
                 <IconButton onTouchEnd={volumeDown} onMouseUp={volumeDown}>
                     <VolumeDownIcon />
@@ -57,16 +89,18 @@ export function VolumeSlider() {
                 <Slider
                     aria-label="Volume"
                     max={MAX}
-                    value={volume}
+                    value={displayVolume}
                     step={5}
                     onChange={handleChange}
+                    onChangeCommitted={handleChangeCommitted}
                     disabled={mute}
                     marks={marks}
                 />
-                    <IconButton onTouchEnd={volumeUp} onMouseUp={volumeUp}>
-                        <VolumeUpIcon />
-                    </IconButton>
+                <IconButton onTouchEnd={volumeUp} onMouseUp={volumeUp}>
+                    <VolumeUpIcon />
+                </IconButton>
             </Stack>
+        </Box>
         </Box>
     )
 }
