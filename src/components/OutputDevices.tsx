@@ -12,7 +12,8 @@ import { ISinkSerialize } from '../types'
 import { volume2percent } from '../utils'
 import { Grid, Typography } from '@mui/material'
 
-export function AudioDevices() {
+// this will violate DRY principle. They should be Sliders with common API interface for in/out/app volume controll, but at first I'll duplicate it to explore REST api first.
+export const OutputDevices: React.FC = () => {
     const [audioDevices, setAudioDevices] = useState<ISinkSerialize[]>([])
 
     useEffect(() => {
@@ -22,13 +23,13 @@ export function AudioDevices() {
     return (
         <>
             {audioDevices.map(device => (
-                <OutputDevices {...device} key={device.index} setAudioDevices={setAudioDevices} />
+                <Device {...device} key={device.index} setAudioDevices={setAudioDevices} />
             ))}
         </>
     )
 }
 
-function OutputDevices(props: ISinkSerialize & { setAudioDevices: Dispatch<SetStateAction<ISinkSerialize[]>> }) {
+const Device: React.FC<ISinkSerialize & { setAudioDevices: Dispatch<SetStateAction<ISinkSerialize[]>> }> = props => {
     const MAX = 150
     const volume = volume2percent(props.volume[0].value)
     const mute = props.mute

@@ -1,60 +1,18 @@
-import { AudioDevices } from './components'
+import { OutputDevices, Body, Header } from './components'
 
 import React from 'react'
-import IconButton from '@mui/material/IconButton'
-import Box from '@mui/material/Box'
-import { Typography } from '@mui/material'
-import { useTheme, ThemeProvider, createTheme } from '@mui/material/styles'
-import Brightness4Icon from '@mui/icons-material/Brightness4'
-import Brightness7Icon from '@mui/icons-material/Brightness7'
+import { PaletteMode } from '@mui/material'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
 import './scss/style.scss'
 
-const ColorModeContext = React.createContext({ toggleColorMode: () => {} })
+export const ThemeModeContext = React.createContext({ toggle: () => {} })
 
-function MyApp() {
-    const theme = useTheme()
-    const colorMode = React.useContext(ColorModeContext)
-    return (
-        <Box
-            sx={{
-                boxSizing: 'border-box',
-                display: 'flex',
-                alignItems: 'flex-start',
-                justifyContent: 'center',
-                bgcolor: 'background.default',
-                color: 'text.primary',
-                minHeight: '100vh',
-                padding: 1,
-            }}
-        >
-            <Box maxWidth={1200}>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                    }}
-                >
-                    <Box>
-                        <Typography variant="h5">Pulse remote</Typography>
-                    </Box>
-                    <Box>
-                        {theme.palette.mode} mode
-                        <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
-                            {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-                        </IconButton>
-                    </Box>
-                </Box>
-                <AudioDevices />
-            </Box>
-        </Box>
-    )
-}
+export const App: React.FC = () => {
+    const [mode, setMode] = React.useState<PaletteMode>('dark')
 
-export default function App() {
-    const [mode, setMode] = React.useState<'light' | 'dark'>('dark')
-    const colorMode = React.useMemo(
+    const themeMode = React.useMemo(
         () => ({
-            toggleColorMode: () => {
+            toggle: () => {
                 setMode(prevMode => (prevMode === 'light' ? 'dark' : 'light'))
             },
         }),
@@ -72,10 +30,14 @@ export default function App() {
     )
 
     return (
-        <ColorModeContext.Provider value={colorMode}>
+        <ThemeModeContext.Provider value={themeMode}>
             <ThemeProvider theme={theme}>
-                <MyApp />
+                <Body>
+                    <Header />
+                    <OutputDevices />
+                </Body>
             </ThemeProvider>
-        </ColorModeContext.Provider>
+        </ThemeModeContext.Provider>
     )
 }
+
