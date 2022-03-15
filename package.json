@@ -45,6 +45,7 @@
     ]
   },
   "devDependencies": {
-    "@mui/icons-material": "^5.4.4"
+    "@mui/icons-material": "^5.4.4",
+    "sass": "^1.49.9"
   }
 }

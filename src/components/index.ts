@@ -1,1 +1,1 @@
-export * from './volumeSlider'
+export * from './OutputDevices'

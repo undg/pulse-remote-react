@@ -22,13 +22,13 @@ export function AudioDevices() {
     return (
         <>
             {audioDevices.map(device => (
-                <VolumeSlider {...device} key={device.index} setAudioDevices={setAudioDevices} />
+                <OutputDevices {...device} key={device.index} setAudioDevices={setAudioDevices} />
             ))}
         </>
     )
 }
 
-function VolumeSlider(props: ISinkSerialize & { setAudioDevices: Dispatch<SetStateAction<ISinkSerialize[]>> }) {
+function OutputDevices(props: ISinkSerialize & { setAudioDevices: Dispatch<SetStateAction<ISinkSerialize[]>> }) {
     const MAX = 150
     const volume = volume2percent(props.volume[0].value)
     const mute = props.mute
@@ -70,16 +70,15 @@ function VolumeSlider(props: ISinkSerialize & { setAudioDevices: Dispatch<SetSta
     ]
 
     return (
-    <Box display="flex" justifyContent="center">
-        <Box mt={2} maxWidth={1400} width="100%">
+        <Box mt={2} width="100%">
             <Grid container alignItems="end">
                 <Grid item xs={10}>
                     <Typography variant="subtitle1">{description}</Typography>
                 </Grid>
                 <Grid item xs={2}>
-                <IconButton onTouchEnd={volumeToggle} onMouseUp={volumeDown}>
-                    <VolumeOffIcon color={mute ? 'error' : 'disabled'} />
-                </IconButton>
+                    <IconButton onTouchEnd={volumeToggle} onMouseUp={volumeToggle}>
+                        <VolumeOffIcon color={mute ? 'error' : 'disabled'} />
+                    </IconButton>
                 </Grid>
             </Grid>
             <Stack spacing={2} direction={{ xs: 'row', sm: 'row' }} alignItems="center">
@@ -100,7 +99,6 @@ function VolumeSlider(props: ISinkSerialize & { setAudioDevices: Dispatch<SetSta
                     <VolumeUpIcon />
                 </IconButton>
             </Stack>
-        </Box>
         </Box>
     )
 }

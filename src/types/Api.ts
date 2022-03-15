@@ -283,13 +283,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         /**
          * No description
          *
-         * @name VSetVolumeSetVolGet
+         * @name VSetVolumeSetVolCardGet
          * @summary V Set
-         * @request GET:/volume/set/{vol}
+         * @request GET:/volume/set/{vol}/{card}
          */
-        vSetVolumeSetVolGet: (vol: number, params: RequestParams = {}) =>
+        vSetVolumeSetVolCardGet: (vol: number, card: number, params: RequestParams = {}) =>
             this.request<ISinkSerialize[], HTTPValidationError>({
-                path: `/volume/set/${vol}`,
+                path: `/volume/set/${vol}/${card}`,
                 method: 'GET',
                 format: 'json',
                 ...params,
