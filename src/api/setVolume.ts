@@ -3,19 +3,17 @@ import { ISinkSerialize } from '../types'
 
 interface SetVolumeFromRes {
     endpoint: Endpoint
-    value?: number | null
+    value?: number
     card?: number
 }
 
-export async function apiAudioDevices({ endpoint, value = null, card = 0 }: SetVolumeFromRes) {
-    const res =
-        value === null
-            ? await fetch(apiUrl + endpoint.replace('{card}', card.toString()))
-            : await fetch(apiUrl + endpoint.replace('{card}', card.toString()).replace('{vol}', value.toString()))
+export async function apiAudioDevices({ endpoint, value = 0, card = 0 }: SetVolumeFromRes) {
+    const url = apiUrl + endpoint
+        .replace('{card}', card.toString())
+        .replace('{vol}', value.toString())
 
+    const res = await fetch(url)
     const json: ISinkSerialize[] = await res.json()
-
-    console.log(endpoint, json)
 
     return json
 }
