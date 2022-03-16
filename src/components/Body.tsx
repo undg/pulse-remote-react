@@ -1,4 +1,4 @@
-import Box from "@mui/material/Box";
+import Box from '@mui/material/Box'
 
 export const Body: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <Box
@@ -13,7 +13,6 @@ export const Body: React.FC<{ children: React.ReactNode }> = ({ children }) => (
             padding: 1,
         }}
     >
-        <Box maxWidth={1200}>{children}</Box>
+        <Box sx={{ maxWidth: '1200px', width: '100vw' }}>{children}</Box>
     </Box>
 )
-

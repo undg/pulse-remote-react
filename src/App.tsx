@@ -1,9 +1,10 @@
-import { OutputDevices, Body, Header } from './components'
+import { Body, Header } from './components'
 
 import React from 'react'
 import { PaletteMode } from '@mui/material'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import './scss/style.scss'
+import { Main } from './components/Main'
 
 export const ThemeModeContext = React.createContext({ toggle: () => {} })
 
@@ -34,7 +35,7 @@ export const App: React.FC = () => {
             <ThemeProvider theme={theme}>
                 <Body>
                     <Header />
-                    <OutputDevices />
+                    <Main />
                 </Body>
             </ThemeProvider>
         </ThemeModeContext.Provider>

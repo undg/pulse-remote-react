@@ -17,7 +17,9 @@ export const Header: React.FC = () => {
                 justifyContent: 'space-between',
             }}
         >
-            <Typography variant="h5">Pulse remote</Typography>
+            <Box>
+                <Typography variant="h5">Pulse remote</Typography>
+            </Box>
             <Box>
                 {theme.palette.mode} mode
                 <IconButton sx={{ ml: 1 }} onClick={themeModem.toggle} color="inherit">
