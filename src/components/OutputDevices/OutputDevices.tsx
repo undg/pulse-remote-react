@@ -9,10 +9,10 @@ import VolumeDownIcon from '@mui/icons-material/VolumeDown'
 import VolumeOffIcon from '@mui/icons-material/VolumeOff'
 import VolumeUpIcon from '@mui/icons-material/VolumeUp'
 
-import { Endpoint } from '../constant'
-import { apiAudioDevices } from '../api'
-import { ExpandAll, ISinkSerialize } from '../types'
-import { volume2percent } from '../utils'
+import { Endpoint } from '../../constant'
+import { apiAudioDevices } from '../../api'
+import { ExpandAll, ISinkSerialize } from '../../types'
+import { volume2percent } from '../../utils'
 
 type IOutputDevices = ExpandAll<ISinkSerialize>[]
 // this will violate DRY principle. They should be Sliders with common API interface for in/out/app volume controll, but at first I'll duplicate it to explore REST api first.
