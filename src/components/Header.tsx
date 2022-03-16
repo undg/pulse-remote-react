@@ -4,8 +4,8 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import Brightness4Icon from '@mui/icons-material/Brightness4'
 import Brightness7Icon from '@mui/icons-material/Brightness7'
-import { ThemeModeContext } from '../App'
 import { useTheme } from '@mui/material/styles'
+import { ThemeModeContext } from '../context'
 
 export const Header: React.FC = () => {
     const theme = useTheme()

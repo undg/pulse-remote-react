@@ -1,13 +1,12 @@
-import * as React from 'react'
+import { useState } from 'react'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import Box from '@mui/material/Box'
-import { OutputDevices } from './OutputDevices'
-import { TabPanel } from './TabPanel'
 import Typography from '@mui/material/Typography'
+import { OutputDevices, TabPanel } from '.'
 
 export const Main: React.FC = () => {
-    const [value, setValue] = React.useState(0)
+    const [value, setValue] = useState(0)
 
     const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue)

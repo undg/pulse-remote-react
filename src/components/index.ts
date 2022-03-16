@@ -1,3 +1,6 @@
-export * from './Body'
 export * from './Header'
+export * from './Main'
 export * from './OutputDevices'
+export * from './TabPanel'
+export * from './index'
+export * from './Body'

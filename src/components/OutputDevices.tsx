@@ -1,16 +1,18 @@
 import { useEffect, useState, Dispatch, SetStateAction } from 'react'
 import Box from '@mui/material/Box'
-import Stack from '@mui/material/Stack'
-import Slider from '@mui/material/Slider'
+import Grid from '@mui/material/Grid'
 import IconButton from '@mui/material/IconButton'
+import Slider from '@mui/material/Slider'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
 import VolumeDownIcon from '@mui/icons-material/VolumeDown'
-import VolumeUpIcon from '@mui/icons-material/VolumeUp'
 import VolumeOffIcon from '@mui/icons-material/VolumeOff'
-import { Endpoint } from './../constant'
+import VolumeUpIcon from '@mui/icons-material/VolumeUp'
+
+import { Endpoint } from '../constant'
 import { apiAudioDevices } from '../api'
 import { ExpandAll, ISinkSerialize } from '../types'
 import { volume2percent } from '../utils'
-import { Grid, Typography } from '@mui/material'
 
 type IOutputDevices = ExpandAll<ISinkSerialize>[]
 // this will violate DRY principle. They should be Sliders with common API interface for in/out/app volume controll, but at first I'll duplicate it to explore REST api first.

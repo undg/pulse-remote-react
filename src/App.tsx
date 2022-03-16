@@ -1,17 +1,14 @@
-import { Body, Header } from './components'
-
-import React from 'react'
+import { useMemo, useState } from 'react'
 import { PaletteMode } from '@mui/material'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import './scss/style.scss'
-import { Main } from './components/Main'
-
-export const ThemeModeContext = React.createContext({ toggle: () => {} })
+import { Body, Header, Main } from './components'
+import { ThemeModeContext } from './context'
 
 export const App: React.FC = () => {
-    const [mode, setMode] = React.useState<PaletteMode>('dark')
+    const [mode, setMode] = useState<PaletteMode>('dark')
 
-    const themeMode = React.useMemo(
+    const themeMode = useMemo(
         () => ({
             toggle: () => {
                 setMode(prevMode => (prevMode === 'light' ? 'dark' : 'light'))
@@ -20,7 +17,7 @@ export const App: React.FC = () => {
         []
     )
 
-    const theme = React.useMemo(
+    const theme = useMemo(
         () =>
             createTheme({
                 palette: {
