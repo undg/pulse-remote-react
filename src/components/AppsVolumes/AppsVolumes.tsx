@@ -1,46 +1,43 @@
-import { useEffect, useState, Dispatch, SetStateAction } from 'react'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import IconButton from '@mui/material/IconButton'
-import Slider from '@mui/material/Slider'
-import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
+import { useEffect, useState } from 'react'
+import { apiGetVolumeInfo, apiSetVolumeDownApp, apiSetVolumeUpApp } from '../../api'
+import { ExpandAll, ISinkInput } from '../../types'
 import VolumeDownIcon from '@mui/icons-material/VolumeDown'
 import VolumeOffIcon from '@mui/icons-material/VolumeOff'
 import VolumeUpIcon from '@mui/icons-material/VolumeUp'
-
-import { Endpoint } from '../../constant'
-import { apiAudioDevices } from '../../api'
-import { ExpandAll, ISinkSerialize } from '../../types'
+import Stack from '@mui/material/Stack'
+import Slider from '@mui/material/Slider'
 import { volume2percent } from '../../utils'
 
-type IOutputDevices = ExpandAll<ISinkSerialize>[]
-// this will violate DRY principle. They should be Sliders with common API interface for in/out/app volume controll, but at first I'll duplicate it to explore REST api first.
-export const OutputDevices: React.FC = ({...rest}) => {
-    const [audioDevices, setAudioDevices] = useState<IOutputDevices>([])
+type IAppVolume = ExpandAll<ISinkInput>
 
+export const AppsVolumes: React.FC = () => {
+    const [apps, setApps] = useState<IAppVolume[]>([])
     useEffect(() => {
-        apiAudioDevices({ endpoint: Endpoint.volumeInfo }).then(setAudioDevices)
+        apiGetVolumeInfo().then(setApps)
     }, [])
 
     return (
-        <div {...rest}>
-            {audioDevices.map(device => (
-                <Device {...device} key={device.index} setAudioDevices={setAudioDevices} />
+        <>
+            {apps.map(app => (
+                <AppSlider {...app} key={app.id} />
             ))}
-        </div>
+        </>
     )
 }
 
-const Device: React.FC<ISinkSerialize & { setAudioDevices: Dispatch<SetStateAction<ISinkSerialize[]>> }> = props => {
-    const MAX = 150
-    const volume = volume2percent(props.volume[0].value)
+const AppSlider = (props: IAppVolume) => {
+    const volume = volume2percent(props.volume)
     const mute = props.mute
-    const name = props.description
-    const card = props.index
-    const setAudioDevState = props.setAudioDevices
+    const name = props.name
+
+    const MAX = 150
 
     const [displayVolume, setDisplyVolume] = useState<number>(volume)
+
     useEffect(() => {
         setDisplyVolume(volume)
     }, [volume])
@@ -50,21 +47,21 @@ const Device: React.FC<ISinkSerialize & { setAudioDevices: Dispatch<SetStateActi
     }
     const handleChangeCommitted = (_event: any, newVolume: number | number[]) => {
         if (newVolume === volume) return
-
-        apiAudioDevices({ endpoint: Endpoint.volumeSet, value: newVolume as number, card }).then(setAudioDevState)
     }
 
-    const volumeUp = () => {
-        apiAudioDevices({ endpoint: Endpoint.volumeUp, card }).then(setAudioDevState)
+    const volumeUp = async () => {
+        const res = await apiSetVolumeUpApp(props.id)
+        setDisplyVolume(volume2percent(res.volume))
     }
 
-    const volumeDown = () => {
-        apiAudioDevices({ endpoint: Endpoint.volumeDown, card }).then(setAudioDevState)
+    const volumeDown = async () => {
+        const res = await apiSetVolumeDownApp(props.id)
+        setDisplyVolume(volume2percent(res.volume))
     }
 
     const volumeToggle = () => {
-        apiAudioDevices({ endpoint: Endpoint.volumeToggle, card }).then(setAudioDevState)
     }
+
 
     const marks = [
         { value: 0, label: '0%' },

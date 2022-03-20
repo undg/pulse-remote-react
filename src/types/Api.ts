@@ -14,7 +14,7 @@ export interface HTTPValidationError {
     detail?: ValidationError[]
 }
 
-export interface ISinkInputList {
+export interface ISinkInput {
     /** Id */
     id: number
 
@@ -23,6 +23,9 @@ export interface ISinkInputList {
 
     /** Name */
     name: string
+
+    /** Volume */
+    volume: number
 }
 
 export interface ISinkSerialize {
@@ -359,13 +362,43 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         /**
          * No description
          *
-         * @name SInputListSinkInputListGet
-         * @summary S Input List
-         * @request GET:/sink/input/list
+         * @name SInputInfoSinkInputInfoGet
+         * @summary S Input Info
+         * @request GET:/sink/input/info
          */
-        sInputListSinkInputListGet: (params: RequestParams = {}) =>
-            this.request<ISinkInputList[], any>({
-                path: `/sink/input/list`,
+        sInputInfoSinkInputInfoGet: (params: RequestParams = {}) =>
+            this.request<ISinkInput[], any>({
+                path: `/sink/input/info`,
+                method: 'GET',
+                format: 'json',
+                ...params,
+            }),
+
+        /**
+         * No description
+         *
+         * @name SInputVolumeUpSinkInputUpIndexGet
+         * @summary S Input Volume Up
+         * @request GET:/sink/input/up/{index}
+         */
+        sInputVolumeUpSinkInputUpIndexGet: (index: number, params: RequestParams = {}) =>
+            this.request<ISinkInput[], HTTPValidationError>({
+                path: `/sink/input/up/${index}`,
+                method: 'GET',
+                format: 'json',
+                ...params,
+            }),
+
+        /**
+         * No description
+         *
+         * @name SInputVolumeDownSinkInputDownIndexGet
+         * @summary S Input Volume Down
+         * @request GET:/sink/input/down/{index}
+         */
+        sInputVolumeDownSinkInputDownIndexGet: (index: number, params: RequestParams = {}) =>
+            this.request<ISinkInput[], HTTPValidationError>({
+                path: `/sink/input/down/${index}`,
                 method: 'GET',
                 format: 'json',
                 ...params,

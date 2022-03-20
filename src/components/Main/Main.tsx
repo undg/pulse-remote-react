@@ -3,7 +3,7 @@ import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { OutputDevices, TabPanel } from './..'
+import { AppsVolumes, OutputDevices, TabPanel } from './..'
 
 export const Main: React.FC = () => {
     const [value, setValue] = useState(0)
@@ -21,16 +21,16 @@ export const Main: React.FC = () => {
         <Box sx={{ width: '100%' }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                    <Tab label="Out" {...a11yProps(0)} />
-                    <Tab label="App" {...a11yProps(1)} />
+                    <Tab label="App" {...a11yProps(0)} />
+                    <Tab label="Out" {...a11yProps(1)} />
                     <Tab label="In" {...a11yProps(2)} />
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
-                <OutputDevices />
+                <AppsVolumes />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <Typography variant="h4" m={2}>...App @TODO</Typography>
+                <OutputDevices />
             </TabPanel>
             <TabPanel value={value} index={2}>
                 <Typography variant="h4" m={2}>...In @TODO</Typography>
