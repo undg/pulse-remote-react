@@ -11,6 +11,7 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp'
 import Stack from '@mui/material/Stack'
 import Slider from '@mui/material/Slider'
 import { volume2percent } from '../../utils'
+import { sliderMarks } from '../../constant'
 
 type IAppVolume = ExpandAll<ISinkInput>
 
@@ -63,13 +64,6 @@ const AppSlider = (props: IAppVolume) => {
     }
 
 
-    const marks = [
-        { value: 0, label: '0%' },
-        { value: 50, label: '50%' },
-        { value: 100, label: '100%' },
-        { value: 150, label: '150%' },
-    ]
-
     return (
         <Box mt={2} width="100%">
             <Grid container alignItems="end">
@@ -94,7 +88,7 @@ const AppSlider = (props: IAppVolume) => {
                     onChange={handleChange}
                     onChangeCommitted={handleChangeCommitted}
                     disabled={mute}
-                    marks={marks}
+                    marks={sliderMarks}
                 />
                 <IconButton onTouchEnd={volumeUp} onMouseUp={volumeUp}>
                     <VolumeUpIcon />

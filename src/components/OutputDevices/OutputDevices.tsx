@@ -9,14 +9,14 @@ import VolumeDownIcon from '@mui/icons-material/VolumeDown'
 import VolumeOffIcon from '@mui/icons-material/VolumeOff'
 import VolumeUpIcon from '@mui/icons-material/VolumeUp'
 
-import { Endpoint } from '../../constant'
+import { Endpoint, sliderMarks } from '../../constant'
 import { apiAudioDevices } from '../../api'
 import { ExpandAll, ISinkSerialize } from '../../types'
 import { volume2percent } from '../../utils'
 
 type IOutputDevices = ExpandAll<ISinkSerialize>[]
 // this will violate DRY principle. They should be Sliders with common API interface for in/out/app volume controll, but at first I'll duplicate it to explore REST api first.
-export const OutputDevices: React.FC = ({...rest}) => {
+export const OutputDevices: React.FC = ({ ...rest }) => {
     const [audioDevices, setAudioDevices] = useState<IOutputDevices>([])
 
     useEffect(() => {
@@ -66,13 +66,6 @@ const Device: React.FC<ISinkSerialize & { setAudioDevices: Dispatch<SetStateActi
         apiAudioDevices({ endpoint: Endpoint.volumeToggle, card }).then(setAudioDevState)
     }
 
-    const marks = [
-        { value: 0, label: '0%' },
-        { value: 50, label: '50%' },
-        { value: 100, label: '100%' },
-        { value: 150, label: '150%' },
-    ]
-
     return (
         <Box mt={2} width="100%">
             <Grid container alignItems="end">
@@ -97,7 +90,7 @@ const Device: React.FC<ISinkSerialize & { setAudioDevices: Dispatch<SetStateActi
                     onChange={handleChange}
                     onChangeCommitted={handleChangeCommitted}
                     disabled={mute}
-                    marks={marks}
+                    marks={sliderMarks}
                 />
                 <IconButton onTouchEnd={volumeUp} onMouseUp={volumeUp}>
                     <VolumeUpIcon />
