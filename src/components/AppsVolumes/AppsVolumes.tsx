@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import { useEffect, useState } from 'react'
-import { apiGetVolumeInfo, apiSetVolumeDownApp, apiSetVolumeUpApp } from '../../api'
+import { apiGetVolumeInfo, apiSetVolumeApp, apiSetVolumeDownApp, apiSetVolumeToggleApp, apiSetVolumeUpApp } from '../../api'
 import { ExpandAll, ISinkInput } from '../../types'
 import VolumeDownIcon from '@mui/icons-material/VolumeDown'
 import VolumeOffIcon from '@mui/icons-material/VolumeOff'
@@ -32,12 +32,13 @@ export const AppsVolumes: React.FC = () => {
 
 const AppSlider = (props: IAppVolume) => {
     const volume = volume2percent(props.volume)
-    const mute = props.mute
     const name = props.name
+    const index = props.id
 
     const MAX = 150
 
     const [displayVolume, setDisplyVolume] = useState<number>(volume)
+    const [mute, setMute] = useState<boolean>(props.mute)
 
     useEffect(() => {
         setDisplyVolume(volume)
@@ -48,6 +49,7 @@ const AppSlider = (props: IAppVolume) => {
     }
     const handleChangeCommitted = (_event: any, newVolume: number | number[]) => {
         if (newVolume === volume) return
+        apiSetVolumeApp(index, newVolume as number)
     }
 
     const volumeUp = async () => {
@@ -60,7 +62,9 @@ const AppSlider = (props: IAppVolume) => {
         setDisplyVolume(volume2percent(res.volume))
     }
 
-    const volumeToggle = () => {
+    const volumeToggle = async () => {
+        const res = await apiSetVolumeToggleApp(index)
+        setMute(res.mute)
     }
 
 

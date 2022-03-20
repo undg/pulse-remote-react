@@ -7,6 +7,8 @@ export enum Endpoint {
     volumeToggle = '/volume/toggle/{card}',
     volumeSet = '/volume/set/{vol}/{card}',
     volumeAppsInfo = '/sink/input/info',
-    volumeUpApp = '/sink/input/up/{idx}',
-    volumeDownApp = '/sink/input/down/{idx}',
+    volumeUpApp = '/sink/input/up/{index}',
+    volumeDownApp = '/sink/input/down/{index}',
+    volumeSetApp = '/sink/input/set/{vol}/{index}',
+    volumeToggleApp = '/sink/input/toggle/{index}',
 }

@@ -382,7 +382,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
          * @request GET:/sink/input/up/{index}
          */
         sInputVolumeUpSinkInputUpIndexGet: (index: number, params: RequestParams = {}) =>
-            this.request<ISinkInput[], HTTPValidationError>({
+            this.request<ISinkInput, HTTPValidationError>({
                 path: `/sink/input/up/${index}`,
                 method: 'GET',
                 format: 'json',
@@ -397,8 +397,38 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
          * @request GET:/sink/input/down/{index}
          */
         sInputVolumeDownSinkInputDownIndexGet: (index: number, params: RequestParams = {}) =>
-            this.request<ISinkInput[], HTTPValidationError>({
+            this.request<ISinkInput, HTTPValidationError>({
                 path: `/sink/input/down/${index}`,
+                method: 'GET',
+                format: 'json',
+                ...params,
+            }),
+
+        /**
+         * No description
+         *
+         * @name SInputVolumeSetSinkInputSetVolIndexGet
+         * @summary S Input Volume Set
+         * @request GET:/sink/input/set/{vol}/{index}
+         */
+        sInputVolumeSetSinkInputSetVolIndexGet: (index: number, vol: number, params: RequestParams = {}) =>
+            this.request<ISinkInput, HTTPValidationError>({
+                path: `/sink/input/set/${vol}/${index}`,
+                method: 'GET',
+                format: 'json',
+                ...params,
+            }),
+
+        /**
+         * No description
+         *
+         * @name SInputToggleSinkInputToggleIndexGet
+         * @summary S Input Toggle
+         * @request GET:/sink/input/toggle/{index}
+         */
+        sInputToggleSinkInputToggleIndexGet: (index: number, params: RequestParams = {}) =>
+            this.request<ISinkInput, HTTPValidationError>({
+                path: `/sink/input/toggle/${index}`,
                 method: 'GET',
                 format: 'json',
                 ...params,

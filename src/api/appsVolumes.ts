@@ -11,7 +11,7 @@ export async function apiGetVolumeInfo() {
 }
 
 export async function apiSetVolumeUpApp(idx: number) {
-    const url = apiUrl + Endpoint.volumeUpApp.replace('{idx}', String(idx))
+    const url = apiUrl + Endpoint.volumeUpApp.replace('{index}', String(idx))
 
     const res = await fetch(url)
     const json: ISinkInput = await res.json()
@@ -20,7 +20,28 @@ export async function apiSetVolumeUpApp(idx: number) {
 }
 
 export async function apiSetVolumeDownApp(idx: number) {
-    const url = apiUrl + Endpoint.volumeDownApp.replace('{idx}', String(idx))
+    const url = apiUrl + Endpoint.volumeDownApp.replace('{index}', String(idx))
+
+    const res = await fetch(url)
+    const json: ISinkInput = await res.json()
+
+    return json
+}
+
+export async function apiSetVolumeApp(idx: number, vol: number) {
+    const url = apiUrl + Endpoint.volumeSetApp
+        .replace('{index}', String(idx))
+        .replace('{vol}', String(vol))
+
+    const res = await fetch(url)
+    const json: ISinkInput = await res.json()
+
+    return json
+}
+
+export async function apiSetVolumeToggleApp(index: number) {
+    const url = apiUrl + Endpoint.volumeToggleApp
+        .replace('{index}', String(index))
 
     const res = await fetch(url)
     const json: ISinkInput = await res.json()
