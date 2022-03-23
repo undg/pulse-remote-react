@@ -14,20 +14,6 @@ export interface HTTPValidationError {
     detail?: ValidationError[]
 }
 
-export interface ISinkInput {
-    /** Id */
-    id: number
-
-    /** Mute */
-    mute: boolean
-
-    /** Name */
-    name: string
-
-    /** Volume */
-    volume: number
-}
-
 export interface ISinkSerialize {
     /** Volume */
     volume: IVolume[]
@@ -54,6 +40,20 @@ export interface IVolume {
 
     /** Value */
     value: number
+}
+
+export interface IVolumeInfo {
+    /** Index */
+    index: number
+
+    /** Mute */
+    mute: boolean
+
+    /** Name */
+    name: string
+
+    /** Volume */
+    volume: number
 }
 
 export interface ValidationError {
@@ -282,17 +282,17 @@ export class HttpClient<SecurityDataType = unknown> {
  * @version 0.1.0
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
-    volumeDevice = {
+    volumeDeviceOut = {
         /**
          * @description Set volume in percent for output device with given index.
          *
-         * @name VSetVolumeDeviceSetVolCardGet
-         * @summary V Set
-         * @request GET:/volume-device/set/{vol}/{card}
+         * @name VdoSetVolumeDeviceOutSetVolCardGet
+         * @summary Vdo Set
+         * @request GET:/volume-device-out/set/{vol}/{card}
          */
-        vSetVolumeDeviceSetVolCardGet: (vol: number, card: number, params: RequestParams = {}) =>
+        vdoSetVolumeDeviceOutSetVolCardGet: (vol: number, card: number, params: RequestParams = {}) =>
             this.request<ISinkSerialize[], HTTPValidationError>({
-                path: `/volume-device/set/${vol}/${card}`,
+                path: `/volume-device-out/set/${vol}/${card}`,
                 method: 'GET',
                 format: 'json',
                 ...params,
@@ -301,13 +301,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         /**
          * @description Set volume up for output device with given index.
          *
-         * @name VUpVolumeDeviceUpCardGet
-         * @summary V Up
-         * @request GET:/volume-device/up/{card}
+         * @name VdoUpVolumeDeviceOutUpCardGet
+         * @summary Vdo Up
+         * @request GET:/volume-device-out/up/{card}
          */
-        vUpVolumeDeviceUpCardGet: (card: number, params: RequestParams = {}) =>
+        vdoUpVolumeDeviceOutUpCardGet: (card: number, params: RequestParams = {}) =>
             this.request<ISinkSerialize[], HTTPValidationError>({
-                path: `/volume-device/up/${card}`,
+                path: `/volume-device-out/up/${card}`,
                 method: 'GET',
                 format: 'json',
                 ...params,
@@ -316,13 +316,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         /**
          * @description Set volume down for output device with given index.
          *
-         * @name VDownVolumeDeviceDownCardGet
-         * @summary V Down
-         * @request GET:/volume-device/down/{card}
+         * @name VdoDownVolumeDeviceOutDownCardGet
+         * @summary Vdo Down
+         * @request GET:/volume-device-out/down/{card}
          */
-        vDownVolumeDeviceDownCardGet: (card: number, params: RequestParams = {}) =>
+        vdoDownVolumeDeviceOutDownCardGet: (card: number, params: RequestParams = {}) =>
             this.request<ISinkSerialize[], HTTPValidationError>({
-                path: `/volume-device/down/${card}`,
+                path: `/volume-device-out/down/${card}`,
                 method: 'GET',
                 format: 'json',
                 ...params,
@@ -331,13 +331,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         /**
          * @description Toggle mute for output device with given index.
          *
-         * @name VMuteVolumeDeviceToggleCardGet
-         * @summary V Mute
-         * @request GET:/volume-device/toggle/{card}
+         * @name VdoMuteVolumeDeviceOutToggleCardGet
+         * @summary Vdo Mute
+         * @request GET:/volume-device-out/toggle/{card}
          */
-        vMuteVolumeDeviceToggleCardGet: (card: number, params: RequestParams = {}) =>
+        vdoMuteVolumeDeviceOutToggleCardGet: (card: number, params: RequestParams = {}) =>
             this.request<ISinkSerialize[], HTTPValidationError>({
-                path: `/volume-device/toggle/${card}`,
+                path: `/volume-device-out/toggle/${card}`,
                 method: 'GET',
                 format: 'json',
                 ...params,
@@ -346,13 +346,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         /**
          * @description Get informations for output device with given index.
          *
-         * @name VInfoVolumeDeviceInfoGet
-         * @summary V Info
-         * @request GET:/volume-device/info
+         * @name VdoInfoVolumeDeviceOutInfoGet
+         * @summary Vdo Info
+         * @request GET:/volume-device-out/info
          */
-        vInfoVolumeDeviceInfoGet: (params: RequestParams = {}) =>
+        vdoInfoVolumeDeviceOutInfoGet: (params: RequestParams = {}) =>
             this.request<ISinkSerialize[], any>({
-                path: `/volume-device/info`,
+                path: `/volume-device-out/info`,
                 method: 'GET',
                 format: 'json',
                 ...params,
@@ -362,12 +362,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         /**
          * No description
          *
-         * @name SInputInfoVolumeAppInfoGet
-         * @summary S Input Info
+         * @name VaInfoVolumeAppInfoGet
+         * @summary Va Info
          * @request GET:/volume-app/info
          */
-        sInputInfoVolumeAppInfoGet: (params: RequestParams = {}) =>
-            this.request<ISinkInput[], any>({
+        vaInfoVolumeAppInfoGet: (params: RequestParams = {}) =>
+            this.request<IVolumeInfo[], any>({
                 path: `/volume-app/info`,
                 method: 'GET',
                 format: 'json',
@@ -377,12 +377,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         /**
          * No description
          *
-         * @name SInputVolumeUpVolumeAppUpIndexGet
-         * @summary S Input Volume Up
+         * @name VaUpVolumeAppUpIndexGet
+         * @summary Va Up
          * @request GET:/volume-app/up/{index}
          */
-        sInputVolumeUpVolumeAppUpIndexGet: (index: number, params: RequestParams = {}) =>
-            this.request<ISinkInput, HTTPValidationError>({
+        vaUpVolumeAppUpIndexGet: (index: number, params: RequestParams = {}) =>
+            this.request<IVolumeInfo, HTTPValidationError>({
                 path: `/volume-app/up/${index}`,
                 method: 'GET',
                 format: 'json',
@@ -392,12 +392,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         /**
          * No description
          *
-         * @name SInputVolumeDownVolumeAppDownIndexGet
-         * @summary S Input Volume Down
+         * @name VaDownVolumeAppDownIndexGet
+         * @summary Va Down
          * @request GET:/volume-app/down/{index}
          */
-        sInputVolumeDownVolumeAppDownIndexGet: (index: number, params: RequestParams = {}) =>
-            this.request<ISinkInput, HTTPValidationError>({
+        vaDownVolumeAppDownIndexGet: (index: number, params: RequestParams = {}) =>
+            this.request<IVolumeInfo, HTTPValidationError>({
                 path: `/volume-app/down/${index}`,
                 method: 'GET',
                 format: 'json',
@@ -407,12 +407,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         /**
          * @description Set volume in percent for application with given index.
          *
-         * @name SInputVolumeSetVolumeAppSetVolIndexGet
-         * @summary S Input Volume Set
+         * @name VaSetVolumeAppSetVolIndexGet
+         * @summary Va Set
          * @request GET:/volume-app/set/{vol}/{index}
          */
-        sInputVolumeSetVolumeAppSetVolIndexGet: (index: number, vol: number, params: RequestParams = {}) =>
-            this.request<ISinkInput, HTTPValidationError>({
+        vaSetVolumeAppSetVolIndexGet: (index: number, vol: number, params: RequestParams = {}) =>
+            this.request<IVolumeInfo, HTTPValidationError>({
                 path: `/volume-app/set/${vol}/${index}`,
                 method: 'GET',
                 format: 'json',
@@ -422,12 +422,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         /**
          * No description
          *
-         * @name SInputToggleVolumeAppToggleIndexGet
-         * @summary S Input Toggle
+         * @name VaToggleVolumeAppToggleIndexGet
+         * @summary Va Toggle
          * @request GET:/volume-app/toggle/{index}
          */
-        sInputToggleVolumeAppToggleIndexGet: (index: number, params: RequestParams = {}) =>
-            this.request<ISinkInput, HTTPValidationError>({
+        vaToggleVolumeAppToggleIndexGet: (index: number, params: RequestParams = {}) =>
+            this.request<IVolumeInfo, HTTPValidationError>({
                 path: `/volume-app/toggle/${index}`,
                 method: 'GET',
                 format: 'json',

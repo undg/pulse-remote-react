@@ -4,7 +4,7 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import { useEffect, useState } from 'react'
 import { apiGetVolumeInfo, apiSetVolumeApp, apiSetVolumeDownApp, apiSetVolumeToggleApp, apiSetVolumeUpApp } from '../../api'
-import { ExpandAll, ISinkInput } from '../../types'
+import { ExpandAll, IVolumeInfo } from '../../types'
 import VolumeDownIcon from '@mui/icons-material/VolumeDown'
 import VolumeOffIcon from '@mui/icons-material/VolumeOff'
 import VolumeUpIcon from '@mui/icons-material/VolumeUp'
@@ -13,10 +13,11 @@ import Slider from '@mui/material/Slider'
 import { volume2percent } from '../../utils'
 import { sliderMarks } from '../../constant'
 
-type IAppVolume = ExpandAll<ISinkInput>
+type IAppVolume = ExpandAll<IVolumeInfo>
 
 export const AppsVolumes: React.FC = () => {
     const [apps, setApps] = useState<IAppVolume[]>([])
+
     useEffect(() => {
         apiGetVolumeInfo().then(setApps)
     }, [])
@@ -24,18 +25,19 @@ export const AppsVolumes: React.FC = () => {
     return (
         <>
             {apps.map(app => (
-                <AppSlider {...app} key={app.id} />
+                <AppSlider {...app} key={app.index} />
             ))}
         </>
     )
 }
 
 const AppSlider = (props: IAppVolume) => {
-    const volume = volume2percent(props.volume)
-    const name = props.name
-    const index = props.id
-
     const MAX = 150
+    const volume = volume2percent(props.volume)
+
+    const name = props.name
+    const index = props.index
+
 
     const [displayVolume, setDisplyVolume] = useState<number>(volume)
     const [mute, setMute] = useState<boolean>(props.mute)
@@ -53,12 +55,12 @@ const AppSlider = (props: IAppVolume) => {
     }
 
     const volumeUp = async () => {
-        const res = await apiSetVolumeUpApp(props.id)
+        const res = await apiSetVolumeUpApp(index)
         setDisplyVolume(volume2percent(res.volume))
     }
 
     const volumeDown = async () => {
-        const res = await apiSetVolumeDownApp(props.id)
+        const res = await apiSetVolumeDownApp(index)
         setDisplyVolume(volume2percent(res.volume))
     }
 
@@ -66,7 +68,6 @@ const AppSlider = (props: IAppVolume) => {
         const res = await apiSetVolumeToggleApp(index)
         setMute(res.mute)
     }
-
 
     return (
         <Box mt={2} width="100%">

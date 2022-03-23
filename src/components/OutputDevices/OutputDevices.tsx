@@ -8,7 +8,6 @@ import Typography from '@mui/material/Typography'
 import VolumeDownIcon from '@mui/icons-material/VolumeDown'
 import VolumeOffIcon from '@mui/icons-material/VolumeOff'
 import VolumeUpIcon from '@mui/icons-material/VolumeUp'
-
 import { Endpoint, sliderMarks } from '../../constant'
 import { apiAudioDevices } from '../../api'
 import { ExpandAll, ISinkSerialize } from '../../types'
@@ -41,6 +40,8 @@ const Device: React.FC<ISinkSerialize & { setAudioDevices: Dispatch<SetStateActi
     const setAudioDevState = props.setAudioDevices
 
     const [displayVolume, setDisplyVolume] = useState<number>(volume)
+
+
     useEffect(() => {
         setDisplyVolume(volume)
     }, [volume])
@@ -50,20 +51,22 @@ const Device: React.FC<ISinkSerialize & { setAudioDevices: Dispatch<SetStateActi
     }
     const handleChangeCommitted = (_event: any, newVolume: number | number[]) => {
         if (newVolume === volume) return
-
         apiAudioDevices({ endpoint: Endpoint.volumeSet, value: newVolume as number, card }).then(setAudioDevState)
     }
 
     const volumeUp = () => {
         apiAudioDevices({ endpoint: Endpoint.volumeUp, card }).then(setAudioDevState)
+
     }
 
     const volumeDown = () => {
         apiAudioDevices({ endpoint: Endpoint.volumeDown, card }).then(setAudioDevState)
+
     }
 
     const volumeToggle = () => {
         apiAudioDevices({ endpoint: Endpoint.volumeToggle, card }).then(setAudioDevState)
+
     }
 
     return (
