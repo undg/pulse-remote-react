@@ -1,4 +1,5 @@
 export const apiUrl = 'http://192.168.1.222:8448'
+// export const apiUrl = 'http://localhost:8448'
 
 // prettier-ignore
 export enum Endpoint {
