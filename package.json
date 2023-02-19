@@ -21,8 +21,8 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "BROWSER=none react-scripts start",
-    "dev": "yarn types-gen & PORT=9553 BROWSER=none react-scripts start",
+    "start": "PORT=9553 BROWSER=none react-scripts start",
+    "dev": "yarn types-gen & BROWSER=none react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "types-gen": "npx swagger-typescript-api -p http://localhost:8448/openapi.json -o ./src/types/",
