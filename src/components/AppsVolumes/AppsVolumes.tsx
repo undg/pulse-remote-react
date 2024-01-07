@@ -3,7 +3,13 @@ import Grid from '@mui/material/Grid'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import { useEffect, useState } from 'react'
-import { apiGetVolumeInfo, apiSetVolumeApp, apiSetVolumeDownApp, apiSetVolumeToggleApp, apiSetVolumeUpApp } from '../../api'
+import {
+    apiGetVolumeInfo,
+    apiSetVolumeApp,
+    apiSetVolumeDownApp,
+    apiSetVolumeToggleApp,
+    apiSetVolumeUpApp,
+} from '../../api'
 import { ExpandAll, IVolumeInfo } from '../../types'
 import VolumeDownIcon from '@mui/icons-material/VolumeDown'
 import VolumeOffIcon from '@mui/icons-material/VolumeOff'
